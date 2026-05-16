@@ -1,3 +1,5 @@
+"use strict";
+
 import { Charge, ChargeData } from "./charge.mjs";
 import { Balance } from "./balance.mjs";
 
@@ -11,7 +13,7 @@ function createChargeTableCell(data, className) {
 /**
  * @param {Charge} charge
  */
-function createChargeTableRow(charge) {
+function createChargeTableRow(charge, currBalance) {
     const row = document.createElement("tr");
     row.classList.add("charge-row-" + charge.id);
     row.appendChild(
@@ -19,18 +21,27 @@ function createChargeTableRow(charge) {
     );
     row.appendChild(createChargeTableCell(charge.name, "name"));
     row.appendChild(createChargeTableCell(charge.amount, "amnt"));
-    row.appendChild(
-        createChargeTableCell(charge.endingBalance, "current-balance"),
-    );
+    row.appendChild(createChargeTableCell(currBalance, "current-balance"));
     return row;
 }
 
 const pastChargesTableBody = document.querySelector("#past-charges-tbody");
-document.addEventListener("onChargeDataChanged", (event) => {
+document.addEventListener("onBalanceChanged", (event) => {
     pastChargesTableBody.innerHTML = "";
     const charges = ChargeData.get();
+    let balOverTime = Balance.value;
+    console.log("Creating charge array: Starting balance = ", balOverTime);
     charges.forEach((charge) => {
-        pastChargesTableBody.appendChild(createChargeTableRow(charge));
+        pastChargesTableBody.appendChild(
+            createChargeTableRow(charge, balOverTime),
+        );
+        balOverTime += charge.amount;
+        console.log(
+            "Created row for ",
+            charge,
+            ", next balance = ",
+            balOverTime,
+        );
     });
 });
 
@@ -44,16 +55,11 @@ document.querySelector("#charge-form").addEventListener("submit", (e) => {
     const name = document.querySelector("#charge-name");
     const amnt = document.querySelector("#charge-amt");
     ChargeData.add(
-        new Charge(
-            new Date(),
-            name.value,
-            amnt.value,
-            Balance.value - amnt.value,
-        ),
+        new Charge(new Date(), name.value, Number.parseFloat(amnt.value)),
     );
     name.value = "";
     amnt.value = "";
 });
 
-ChargeData.init();
 Balance.init();
+ChargeData.init();

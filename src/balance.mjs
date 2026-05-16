@@ -1,6 +1,7 @@
+import { Charge, ChargeData } from "./charge.mjs";
+
 export const Balance = {
     _value: 0, // We need to define it, but the initial value is overwritten in init!
-    _BALANCE_LOCALSTORAGE_KEY: "balance.value",
 
     get value() {
         return this._value;
@@ -11,19 +12,13 @@ export const Balance = {
         this._dispatchOnChangeEvent();
     },
 
-    _setLocalStorage(val) {
-        localStorage.setItem(this._BALANCE_LOCALSTORAGE_KEY, val);
-    },
-
     init() {
-        document.addEventListener("onBalanceChanged", () => {
-            this._setLocalStorage(this._value);
+        document.addEventListener("onChargeDataChanged", () => {
+            this.value = ChargeData.get().reduce(
+                (acc, charge) => acc - charge.amount,
+                0,
+            );
         });
-
-        this.value = Number.parseFloat(
-            localStorage.getItem(this._BALANCE_LOCALSTORAGE_KEY) ?? 0,
-        );
-        this._setLocalStorage(this.value);
     },
 
     _dispatchOnChangeEvent() {

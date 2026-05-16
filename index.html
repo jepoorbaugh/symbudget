@@ -17,10 +17,10 @@
             <h2>Add Charge</h2>
             <form id="charge-form">
                 <label for="charge-name">
-                    Name:  <input type="text" name="charge-name" id="charge-name" placeholder="Bought coffee..." /> <!-- TODO replace placeholder dynamically for fun :) -->
+                    Name:  <input type="text" name="charge-name" id="charge-name" placeholder="Bought coffee..." required/> <!-- TODO replace placeholder dynamically for fun :) -->
                 </label>
                 <label for="charge-amt">
-                    Price: $<input type="number" name="charge-amt" id="charge-amt" placeholder="5.99" min="0" step="0.01"/>
+                    Price: $<input type="number" name="charge-amt" id="charge-amt" placeholder="5.99" min="0" step="0.01", required/>
                 </label>
                 <button id="log-button">Log</button>
             </form>

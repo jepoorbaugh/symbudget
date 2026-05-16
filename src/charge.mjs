@@ -1,22 +1,20 @@
-import { Balance } from "./balance.mjs";
-
 export class Charge {
     /**
      * @param {Date} date
      * @param {string} name
      * @param {number} amount
      */
-    constructor(date, name, amount, endingBalance) {
+    constructor(date, name, amount) {
         this.date = date;
         this.name = name;
         this.amount = amount;
-        this.endingBalance = endingBalance;
         this.id = -1;
     }
 }
 
 export const ChargeData = {
     _CHARGE_DATA_KEY: "ChargeData",
+    _DAILY_ALLOWANCE: 26.0,
     /**
      * @type Array<Charge>
      */
@@ -49,16 +47,17 @@ export const ChargeData = {
     },
 
     refresh() {
-        let nextData = [];
-        try {
-            nextData =
-                JSON.parse(localStorage.getItem(this._CHARGE_DATA_KEY)) ?? [];
-            for (const charge of nextData) {
-                charge.date = new Date(charge.date);
-            }
-        } catch (e) {
-            console.log("Error refreshing!", e);
+        /**
+         * @type Array<Charge>
+         */
+        let nextData =
+            JSON.parse(localStorage.getItem(this._CHARGE_DATA_KEY)) ?? [];
+
+        for (const charge of nextData) {
+            charge.date = new Date(charge.date);
+            charge.amount = Number.parseFloat(charge.amount);
         }
+        nextData = [this._addDailyAllowance(), ...nextData];
         const addedItems = nextData.filter(
             (charge) => !this._currentData.includes(charge),
         );
@@ -67,6 +66,23 @@ export const ChargeData = {
         );
         this._currentData = nextData;
         this._dispatchOnChangeEvent(addedItems, removedItems);
+    },
+
+    _addDailyAllowance() {
+        const lastDate = this._currentData[0].date;
+        const addedItems = [];
+        for (let i = lastDate.getTime(); i < Date.now(); i += 86400000) {
+            // i is in milliseconds so we can get the date at each missing day
+            addedItems = [
+                new Charge(
+                    new Date(i),
+                    "Daily allowance",
+                    this._DAILY_ALLOWANCE,
+                ),
+                ,
+                ...addedItems,
+            ];
+        }
     },
 
     get() {
@@ -80,7 +96,6 @@ export const ChargeData = {
     add(charge) {
         charge.id = this._currentData.length;
         this._currentData = [charge, ...this._currentData];
-        Balance.value -= charge.amount;
         this._dispatchOnChangeEvent([charge], []);
     },
 
