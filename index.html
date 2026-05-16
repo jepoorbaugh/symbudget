@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Budgeting App</title>
+</head>
+<body>
+    <noscript>This app requires javascript</noscript>
+    <main id="content">
+        <h1 id="app-title">Budgeting</h1>
+        <h3>Today's Total:</h3>
+        <h1 id="balance-header"><span id="balance"></span>$</h1>
+
+        <section id="add-balance-section">
+            <h2>Add Charge</h2>
+            <form id="charge-form">
+                <label for="charge-name">
+                    Name:  <input type="text" name="charge-name" id="charge-name" placeholder="Bought coffee..." /> <!-- TODO replace placeholder dynamically for fun :) -->
+                </label>
+                <label for="charge-amt">
+                    Price: $<input type="number" name="charge-amt" id="charge-amt" placeholder="5.99" min="0" step="0.01"/>
+                </label>
+                <button id="log-button">Log</button>
+            </form>
+        </section>
+        
+        <!-- TODO add export data button -->
+        <!-- TODO add query for past purchases -->
+        <section id="past-charges">
+            <h2>Past Charges</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Charge</th>
+                        <th>Balance Change</th>
+                        <th>Running Total</th>
+                    </tr>
+                </thead>
+                <tbody id="past-charges-tbody">
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <script src="./src/main.mjs" type="module"></script>
+</body>
+</html>
