@@ -1,3 +1,5 @@
+import { Balance } from "./balance.mjs";
+
 export class Charge {
     /**
      * @param {Date} date
@@ -71,10 +73,14 @@ export const ChargeData = {
         return this._currentData;
     },
 
+    /**
+     *
+     * @param {Charge} charge
+     */
     add(charge) {
         charge.id = this._currentData.length;
         this._currentData = [charge, ...this._currentData];
-        console.log(this._currentData, charge);
+        Balance.value -= charge.amount;
         this._dispatchOnChangeEvent([charge], []);
     },
 

@@ -32,7 +32,6 @@ document.addEventListener("onChargeDataChanged", (event) => {
     charges.forEach((charge) => {
         pastChargesTableBody.appendChild(createChargeTableRow(charge));
     });
-    Balance.value = charges[0].endingBalance;
 });
 
 const balanceSpan = document.querySelector("#balance");
