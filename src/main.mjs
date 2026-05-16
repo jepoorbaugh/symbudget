@@ -30,18 +30,11 @@ document.addEventListener("onBalanceChanged", (event) => {
     pastChargesTableBody.innerHTML = "";
     const charges = ChargeData.get();
     let balOverTime = Balance.value;
-    console.log("Creating charge array: Starting balance = ", balOverTime);
     charges.forEach((charge) => {
         pastChargesTableBody.appendChild(
             createChargeTableRow(charge, balOverTime),
         );
         balOverTime += charge.amount;
-        console.log(
-            "Created row for ",
-            charge,
-            ", next balance = ",
-            balOverTime,
-        );
     });
 });
 

@@ -14,14 +14,13 @@ export class Charge {
 
 export const ChargeData = {
     _CHARGE_DATA_KEY: "ChargeData",
-    _DAILY_ALLOWANCE: 26.0,
+    _DAILY_ALLOWANCE: -26.0,
     /**
      * @type Array<Charge>
      */
     _currentData: [],
 
     init() {
-        ChargeData.refresh();
         document.addEventListener("onChargeDataChanged", () => {
             console.log("Saving Current Data");
             localStorage.setItem(
@@ -29,6 +28,7 @@ export const ChargeData = {
                 JSON.stringify(this._currentData),
             );
         });
+        ChargeData.refresh();
     },
 
     /**
@@ -57,32 +57,54 @@ export const ChargeData = {
             charge.date = new Date(charge.date);
             charge.amount = Number.parseFloat(charge.amount);
         }
-        nextData = [this._addDailyAllowance(), ...nextData];
+        nextData = [...this._addDailyAllowance(nextData), ...nextData];
         const addedItems = nextData.filter(
             (charge) => !this._currentData.includes(charge),
         );
         const removedItems = this._currentData.filter(
             (charge) => !nextData.includes(charge),
         );
+        console.log(nextData);
         this._currentData = nextData;
         this._dispatchOnChangeEvent(addedItems, removedItems);
     },
 
-    _addDailyAllowance() {
-        const lastDate = this._currentData[0].date;
-        const addedItems = [];
-        for (let i = lastDate.getTime(); i < Date.now(); i += 86400000) {
-            // i is in milliseconds so we can get the date at each missing day
+    _addDailyAllowance(currentData) {
+        console.log("Adding daily allowance");
+        let addedItems = [];
+        if (currentData[0]) {
+            console.log("Current data has existing data (", currentData, ")");
+            const lastDate = currentData[0].date;
+            const daysSinceLast = Math.floor(
+                (Date.now() - lastDate) / 86400000,
+            );
+            console.log(
+                "Last date: ",
+                lastDate,
+                ", days since last: ",
+                daysSinceLast,
+            );
+            for (let i = daysSinceLast - 1; i >= 0; i--) {
+                console.log(i);
+                addedItems = [
+                    new Charge(
+                        new Date(Date.now() - i * 86400000),
+                        "Daily allowance",
+                        this._DAILY_ALLOWANCE,
+                    ),
+                    ...addedItems,
+                ];
+            }
+        } else {
             addedItems = [
                 new Charge(
-                    new Date(i),
+                    new Date(),
                     "Daily allowance",
                     this._DAILY_ALLOWANCE,
                 ),
-                ,
-                ...addedItems,
             ];
         }
+        return addedItems;
     },
 
     get() {

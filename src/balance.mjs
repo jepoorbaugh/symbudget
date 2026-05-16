@@ -14,10 +14,12 @@ export const Balance = {
 
     init() {
         document.addEventListener("onChargeDataChanged", () => {
+            console.log("Updating balance");
             this.value = ChargeData.get().reduce(
-                (acc, charge) => acc - charge.amount,
+                (acc, charge) => (acc ?? 0) - charge.amount,
                 0,
             );
+            console.log(this.value);
         });
     },
 
