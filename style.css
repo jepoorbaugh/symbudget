@@ -1,0 +1,70 @@
+#app-title {
+    font-family: "Science Gothic", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 601;
+    font-style: normal;
+    color: #6ca120;
+    font-variation-settings:
+        "slnt" -10,
+        "wdth" 177.8,
+        "CTRS" 0;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+    color: #000;
+}
+
+#content {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    font-family: "Quantico", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    gap: 10px
+}
+
+#budget-section h3 {
+    margin: 0px;
+}
+
+#balance-header {
+    font-size: 60px;
+    margin: 0px;
+}
+
+.page {
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px;
+    background-color: #fff;
+    filter: drop-shadow(0px 10px 0.5rem #888)
+}
+
+#charge-form {
+    text-align: right;
+    display: grid;
+    row-gap: 3px;
+    column-gap: 3px;
+    grid-template-areas: 
+        "a b"
+        "c d"
+        ". e";
+    grid-template-rows: auto;
+    grid-template-columns: auto;
+}
+
+#charge-form > button {
+    grid-area: e;
+}

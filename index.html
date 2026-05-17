@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Science+Gothic:slnt,wdth,wght@-10,177.8,601&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Science+Gothic:slnt,wdth,wght@-10,177.8,601&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>symbudget</title>
 </head>
@@ -10,26 +16,30 @@
     <noscript>This app requires javascript</noscript>
     <main id="content">
         <h1 id="app-title">symbudget</h1>
-        <h3>Today's Total:</h3>
-        <h1 id="balance-header"><span id="balance"></span>$</h1>
+        <section id="budget-section">
+            <h1 id="balance-header">$<span id="balance"></span></h1>
+        </section>
 
-        <section id="add-balance-section">
+        <section id="add-balance-section" class="page">
             <h2>Add Charge</h2>
             <form id="charge-form">
                 <label for="charge-name">
-                    Name:  <input type="text" name="charge-name" id="charge-name" placeholder="Bought coffee..." required/> <!-- TODO replace placeholder dynamically for fun :) -->
+                    Description:
                 </label>
+                <input type="text" name="charge-name" id="charge-name" placeholder="Bought coffee..." required/> <!-- TODO replace placeholder dynamically for fun :) -->
                 <label for="charge-amt">
-                    Price: $<input type="number" name="charge-amt" id="charge-amt" placeholder="5.99" min="0" step="0.01", required/>
+                    Price: $
                 </label>
+                <input type="number" name="charge-amt" id="charge-amt" placeholder="5.99" min="0" step="0.01" required inputmode="numeric"/>
                 <button id="log-button">Log</button>
             </form>
         </section>
         
         <!-- TODO add export data button -->
         <!-- TODO add query for past purchases -->
-        <section id="past-charges">
+        <section id="past-charges" class="page">
             <h2>Past Charges</h2>
+            <div class="table-scroll">
             <table>
                 <thead>
                     <tr>
@@ -42,6 +52,7 @@
                 <tbody id="past-charges-tbody">
                 </tbody>
             </table>
+            </div>
         </section>
     </main>
     <script src="./src/main.mjs" type="module"></script>
